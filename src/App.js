@@ -33,11 +33,9 @@ function App() {
 
   // ===== get messages from firebase ========
   useEffect(() => {
-    // run once when the component loads
     db.collection("messages")
       .orderBy("timestamp", "desc")
       .onSnapshot((snapshot) => {
-        // collection -> get whole docs -> access each doc -> make doc to json by doc.data()
         setMessages(
           snapshot.docs.map((doc) => ({ id: doc.id, message: doc.data() }))
         );
@@ -55,8 +53,6 @@ function App() {
     event.preventDefault();
 
     db.collection("messages").add({
-      // this codes will add username, message to firebase
-      // and it's need timestamp
       message: input,
       username: username,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
@@ -72,10 +68,10 @@ function App() {
       <h1>Welcome to Web-messenger made by dontBlamestroming</h1>
       <h2>반가워요 {username}님😄</h2>
 
+      {/* 하단의 input box */}
       <form className="app__form">
         <FormControl className="app__formControl">
           <InputLabel>Enter a message...</InputLabel>
-          {/* input field */}
           <Input
             className="app__input"
             placeholder="메세지를 입력하세요."
@@ -96,6 +92,7 @@ function App() {
         </FormControl>
       </form>
 
+      {/* 채팅 메시지  */}
       <FlipMove>
         {messages.map(({ id, message }) => (
           <Message key={id} username={username} message={message} />
